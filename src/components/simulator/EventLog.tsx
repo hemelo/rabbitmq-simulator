@@ -10,50 +10,52 @@ interface EventLogProps {
 }
 
 const eventTypeColors = {
-  exchange_created: 'bg-exchange-direct/20 text-exchange-direct',
-  queue_created: 'bg-queue/20 text-queue',
-  consumer_created: 'bg-consumer/20 text-consumer',
-  binding_created: 'bg-accent/20 text-accent',
-  message_published: 'bg-message/20 text-message',
-  message_routed: 'bg-primary/20 text-primary',
-  message_consumed: 'bg-green-500/20 text-green-400',
-  message_rejected: 'bg-destructive/20 text-destructive',
-  message_dlq: 'bg-dlq/20 text-dlq'
+  exchange_created: 'bg-exchange-direct text-exchange-direct border-exchange-direct',
+  queue_created: 'bg-queue text-queue border-queue', 
+  consumer_created: 'bg-consumer text-consumer border-consumer',
+  binding_created: 'bg-accent text-accent border-accent',
+  message_published: 'bg-message text-message border-message',
+  message_routed: 'bg-primary text-primary border-primary',
+  message_consumed: 'bg-green-500 text-green-100 border-green-500',
+  message_rejected: 'bg-destructive text-destructive-foreground border-destructive',
+  message_dlq: 'bg-dlq text-white border-dlq'
 };
 
 export const EventLog: React.FC<EventLogProps> = ({ events }) => {
   return (
-    <Card className="glass h-80">
+    <Card className="glass">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-sm">Event Log</h3>
-          <Badge variant="secondary" className="text-xs">
+          <h3 className="font-semibold">Event Log</h3>
+          <Badge variant="secondary">
             {events.length} events
           </Badge>
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <ScrollArea className="h-64 px-4">
-          <div className="space-y-2 pb-4">
+        <ScrollArea className="h-80 px-4">
+          <div className="space-y-3 pb-4">
             {events.length === 0 ? (
-              <div className="text-center text-muted-foreground py-8">
-                <div className="text-2xl mb-2">📋</div>
-                <p className="text-sm">No events yet</p>
-                <p className="text-xs">Events will appear here as you interact with the simulator</p>
+              <div className="text-center text-muted-foreground py-12">
+                <div className="text-4xl mb-3 opacity-30">📋</div>
+                <p className="font-medium">No events yet</p>
+                <p className="text-sm mt-1 opacity-75">Events will appear here as you interact with the simulator</p>
               </div>
             ) : (
               events.map((event) => (
-                <div key={event.id} className="flex items-start gap-2 p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                  <Badge 
-                    className={`text-xs px-2 py-1 ${eventTypeColors[event.type] || 'bg-muted text-muted-foreground'}`}
-                  >
-                    {event.type.replace(/_/g, ' ')}
-                  </Badge>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-foreground">{event.description}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {formatDistanceToNow(event.timestamp, { addSuffix: true })}
-                    </p>
+                <div key={event.id} className="p-3 rounded-lg border bg-card/50 hover:bg-card transition-colors">
+                  <div className="flex items-start gap-3">
+                    <Badge 
+                      className={`text-xs font-medium border px-2 py-1 ${eventTypeColors[event.type] || 'bg-muted text-muted-foreground border-muted'}`}
+                    >
+                      {event.type.replace(/_/g, ' ')}
+                    </Badge>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-foreground leading-relaxed">{event.description}</p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {formatDistanceToNow(event.timestamp, { addSuffix: true })}
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))

@@ -12,21 +12,21 @@ export const RabbitMQSimulator = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-background/80 text-foreground">
-      <div className="container mx-auto p-6">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+      <div className="container mx-auto p-4 sm:p-6">
+        {/* Header - Responsive */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
           <div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               RabbitMQ Simulator
             </h1>
-            <p className="text-muted-foreground mt-1">
+            <p className="text-muted-foreground mt-1 text-sm sm:text-base">
               Visual message queue simulator with real-time flow visualization
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 w-full sm:w-auto">
             <Button 
               onClick={simulator.loadDemo}
-              className="bg-gradient-to-r from-primary to-accent hover:opacity-90"
+              className="bg-gradient-to-r from-primary to-accent hover:opacity-90 flex-1 sm:flex-none"
             >
               <Play className="w-4 h-4 mr-2" />
               Load Demo
@@ -34,6 +34,7 @@ export const RabbitMQSimulator = () => {
             <Button 
               variant="outline"
               onClick={() => window.location.reload()}
+              className="flex-1 sm:flex-none"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Reset
@@ -41,20 +42,20 @@ export const RabbitMQSimulator = () => {
           </div>
         </div>
 
-        {/* Main Layout */}
-        <div className="grid grid-cols-12 gap-6 min-h-[80vh]">
-          {/* Component Palette */}
-          <div className="col-span-2">
+        {/* Main Layout - Responsive Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[80vh]">
+          {/* Component Palette - Responsive positioning */}
+          <div className="lg:col-span-2 order-2 lg:order-1">
             <ComponentPalette simulator={simulator} />
           </div>
 
-          {/* Workspace */}
-          <div className="col-span-7">
+          {/* Workspace - Takes most space */}
+          <div className="lg:col-span-7 order-1 lg:order-2">
             <Workspace simulator={simulator} />
           </div>
 
-          {/* Side Panels */}
-          <div className="col-span-3 space-y-6">
+          {/* Side Panels - Stack on mobile */}
+          <div className="lg:col-span-3 order-3 space-y-6">
             <PublishPanel simulator={simulator} />
             <EventLog events={simulator.state.events} />
           </div>
