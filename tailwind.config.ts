@@ -47,6 +47,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // RabbitMQ Components
+        exchange: {
+          direct: "hsl(var(--exchange-direct))",
+          fanout: "hsl(var(--exchange-fanout))",
+          topic: "hsl(var(--exchange-topic))",
+        },
+        queue: "hsl(var(--queue))",
+        consumer: "hsl(var(--consumer))",
+        message: "hsl(var(--message))",
+        dlq: "hsl(var(--dlq))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
