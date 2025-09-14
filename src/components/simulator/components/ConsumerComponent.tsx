@@ -7,23 +7,32 @@ import { Badge } from '../../ui/badge';
 interface ConsumerComponentProps {
   consumer: Consumer;
   onMove: (position: Position) => void;
+  onRename?: (id: string, newName: string) => void;
+  isSelected?: boolean;
+  onSelect?: () => void;
+  hasActiveFlow?: boolean;
 }
 
-export const ConsumerComponent: React.FC<ConsumerComponentProps> = ({ consumer, onMove }) => {
+export const ConsumerComponent: React.FC<ConsumerComponentProps> = ({ consumer, onMove, onRename, isSelected, onSelect, hasActiveFlow }) => {
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newName = window.prompt('Enter new name:', consumer.name);
+    if (newName && newName !== consumer.name && onRename) {
+      onRename(consumer.id, newName);
+    }
+  };
+
   return (
     <div
-      className={`absolute p-3 rounded-lg border-2 border-consumer bg-consumer/20 text-consumer glass cursor-move hover:scale-105 transition-transform min-w-32 ${
-        consumer.isActive ? 'pulse-glow' : 'opacity-60'
-      }`}
-      style={{
-        left: consumer.position.x,
-        top: consumer.position.y,
-        transform: 'translate(-50%, -50%)'
-      }}
+      className={`p-3 rounded-lg border-2 border-consumer bg-consumer/20 text-consumer glass cursor-move hover:scale-105 transition-all duration-300 min-w-32 select-none ${
+        consumer.isActive ? '' : 'opacity-60'
+      } ${isSelected ? 'ring-2 ring-primary ring-offset-2' : ''} ${hasActiveFlow ? 'animate-pulse scale-105 shadow-lg shadow-cyan-500/50' : ''}`}
+      onClick={(e) => { e.stopPropagation(); onSelect?.(); }}
+      onDoubleClick={handleDoubleClick}
     >
       <div className="flex items-center gap-2 mb-2">
         {consumer.isActive ? (
-          <Activity className="w-5 h-5 animate-pulse" />
+          <Activity className="w-5 h-5" />
         ) : (
           <Users className="w-5 h-5" />
         )}

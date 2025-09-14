@@ -7,6 +7,11 @@ import { Badge } from '../../ui/badge';
 interface ExchangeComponentProps {
   exchange: Exchange;
   onMove: (position: Position) => void;
+  onStartLink?: () => void;
+  onRename?: (id: string, newName: string) => void;
+  isSelected?: boolean;
+  onSelect?: () => void;
+  hasActiveFlow?: boolean;
 }
 
 const exchangeIcons = {
@@ -21,17 +26,22 @@ const exchangeColors = {
   topic: 'border-exchange-topic bg-exchange-topic/20 text-exchange-topic'
 };
 
-export const ExchangeComponent: React.FC<ExchangeComponentProps> = ({ exchange, onMove }) => {
+export const ExchangeComponent: React.FC<ExchangeComponentProps> = ({ exchange, onMove, onStartLink, onRename, isSelected, onSelect, hasActiveFlow }) => {
   const Icon = exchangeIcons[exchange.type];
+
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newName = window.prompt('Enter new name:', exchange.name);
+    if (newName && newName !== exchange.name && onRename) {
+      onRename(exchange.id, newName);
+    }
+  };
 
   return (
     <div
-      className={`absolute p-3 rounded-lg border-2 glass cursor-move hover:scale-105 transition-transform min-w-32 ${exchangeColors[exchange.type]}`}
-      style={{
-        left: exchange.position.x,
-        top: exchange.position.y,
-        transform: 'translate(-50%, -50%)'
-      }}
+      className={`relative p-3 rounded-lg border-2 glass cursor-move hover:scale-105 transition-all duration-300 min-w-32 select-none ${exchangeColors[exchange.type]} ${isSelected ? 'ring-2 ring-primary ring-offset-2' : ''} ${hasActiveFlow ? 'animate-pulse shadow-lg shadow-blue-500/50 scale-105' : ''}`}
+      onClick={(e) => { e.stopPropagation(); onSelect?.(); }}
+      onDoubleClick={handleDoubleClick}
     >
       <div className="flex items-center gap-2 mb-2">
         <Icon className="w-5 h-5" />
@@ -48,6 +58,15 @@ export const ExchangeComponent: React.FC<ExchangeComponentProps> = ({ exchange, 
           {exchange.bindings.length} binding(s)
         </div>
       )}
+
+      {/* Outgoing link handle */}
+      <button
+        type="button"
+        title="Start connection"
+        data-link-handle="true"
+        onPointerDown={(e) => { e.preventDefault(); e.stopPropagation(); onStartLink && onStartLink(); }}
+        className="absolute -right-2 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary border border-background shadow cursor-crosshair"
+      />
     </div>
   );
 };

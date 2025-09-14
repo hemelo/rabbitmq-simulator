@@ -21,6 +21,7 @@ export interface Queue {
   dlq?: string; // Dead Letter Queue ID
   consumers: Consumer[];
   maxLength?: number;
+  messageTtlMs?: number;
 }
 
 export interface Consumer {
@@ -51,10 +52,20 @@ export interface Message {
 export interface SimulatorEvent {
   id: string;
   type: 'exchange_created' | 'queue_created' | 'consumer_created' | 'binding_created' | 
-        'message_published' | 'message_routed' | 'message_consumed' | 'message_rejected' | 'message_dlq';
+        'message_published' | 'message_routed' | 'message_consumed' | 'message_rejected' | 'message_dlq' |
+        'exchange_deleted' | 'queue_deleted' | 'consumer_deleted';
   timestamp: Date;
   description: string;
   details?: Record<string, any>;
+}
+
+export interface MessageFlow {
+  id: string;
+  messageId: string;
+  componentId: string;
+  componentType: 'exchange' | 'queue' | 'consumer';
+  startTime: number;
+  duration: number;
 }
 
 export interface SimulatorState {
@@ -64,4 +75,5 @@ export interface SimulatorState {
   bindings: Binding[];
   messages: Message[];
   events: SimulatorEvent[];
+  activeFlows: MessageFlow[];
 }
