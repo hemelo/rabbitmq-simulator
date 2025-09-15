@@ -58,7 +58,7 @@ O **RabbitMQ Simulator** nasceu dessa necessidade de tornar os conceitos de fila
    ```
 
 4. **Abra seu navegador**
-   Navegue para `http://localhost:5173` e comece a explorar!
+   Navegue para `http://localhost:8080` e comece a explorar!
 
 ### Construindo para Produção
 

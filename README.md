@@ -58,7 +58,7 @@ So I set out to create something different: an interactive canvas where RabbitMQ
    ```
 
 4. **Open your browser**
-   Navigate to `http://localhost:5173` and start exploring!
+   Navigate to `http://localhost:8080` and start exploring!
 
 ### Building for Production
 
